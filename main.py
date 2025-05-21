@@ -6,18 +6,18 @@ La función get_movies() muestra todo el catálogo cuando alguien lo pide.
 La función get_movie(id) es como si alguien preguntará por un libro en específico
 por su código de identificación.
 La función chatbot (query) es un asistente que busca películas según palabras clave y sinónimos.
-La función get_movies_by_category (category) ayuda a encontrar películas según su género (acción, comedia,)   
+La función get_movies_by_category (category) ayuda a encontrar películas según su género (acción, comedia, etc)   
 """
 #Importamos las herramientas necesarias para continuar nuestra API
-from fastapi import FastAPI, HTTPException # FastAPI nos ayuda a crear la API, HTTPException nos ayuda
-from fastapi.responses import HTMLResponse, JSONResponse # HTMLResponse nos ayuda a manejar respuestas HTML,
-import pandas as pd # Pandas nos ayuda a manejar datos en tablas como si fuera un Excel
+from fastapi import FastAPI, HTTPException # FastAPI nos ayuda a crear la API, HTTPException nos ayuda a manejar errores.
+from fastapi.responses import HTMLResponse, JSONResponse # HTMLResponse nos ayuda a manejar respuestas HTML, JSONResponse nos ayuda a manejar respuestas en formato JSON
+import pandas as pd # Pandas nos ayuda a manejar datos en tablas como si fuera un Excel.
 import nltk # nltk es una librería para procesar texto y analizar palabras.
 from nltk.tokenize import word_tokenize # word tokenize nos ayuda a tokenizar texto, es decir, a convertirlo en palabras
 from nltk.corpus import wordnet # Es una librería para analizar sinónimos
 
-#Indicamos la ruta donde NLTK buscará los datos descargados en nuestro computador
-nltk.data.path.append("C:\Users")
+# Indicamos la ruta donde NLTK buscará los datos descargados en nuestro computador
+nltk.data.path.append("C:\Users\user\AppData\Roaming\nltk_data")
 nltk.download('punkt') #Es un paquete para dividir frases en palabras
 nltk.download('wordnet') #Paquete para encontrar sinónimos en palabras
 
