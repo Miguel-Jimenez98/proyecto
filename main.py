@@ -24,10 +24,10 @@ nltk.download('wordnet') #Paquete para encontrar sinónimos en palabras
 #Función para cargar las películas desde un archivo csv
 def load_movies():
     #Leemos el archivo que contiene información de películas y seleccionamos las columnas más importantes
-    df = pd.read_csv("./Dataset/netflix_titles.csv")[{'show_id','title','release_year','listed_in','rating','description'}]
+    df = pd.read_csv(r"./Dataset/netflix_titles.csv")[['show_id','title','release_year','listed_in','rating','description']]
     
     #Renombramos las columnas para que sean más fáciles de entender
-    df.columns = ['id','tile','year','category','rating','overview']
+    df.columns = ['id','title','year','category','rating','overview']
     
     #Llenamos los espacios vacios con texto vacio y convertimos los datos en una lista de diccionarios
     return df.fillna('').to_dict(orient='records')
@@ -42,3 +42,10 @@ def get_synonyms(word):
 
 # Creamos la aplicación Fastapi, que será el motor de nuestra API
 # Esto inicializa la API con una versión
+
+app = FastAPI(title='Mi aplicación de películas', version='1.0.0')
+
+@app.get('/', tags=['Home'])
+def home():
+    # Cuando entremos en el navegador a http://127.0.0.1:8000 veremos un mensaje de bienvenida
+    return HTMLResponse('<h1> Bienvenido a la API de peliculas </h1>')
