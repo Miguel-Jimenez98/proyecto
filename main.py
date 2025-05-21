@@ -17,7 +17,7 @@ from nltk.tokenize import word_tokenize # word tokenize nos ayuda a tokenizar te
 from nltk.corpus import wordnet # Es una librería para analizar sinónimos
 
 # Indicamos la ruta donde NLTK buscará los datos descargados en nuestro computador
-nltk.data.path.append("C:\Users\user\AppData\Roaming\nltk_data")
+nltk.data.path.append(r"C:\Users\user\AppData\Roaming\nltk_data")
 nltk.download('punkt') #Es un paquete para dividir frases en palabras
 nltk.download('wordnet') #Paquete para encontrar sinónimos en palabras
 
@@ -27,7 +27,7 @@ def load_movies():
     df = pd.read_csv("./Dataset/netflix_titles.csv")[{'show_id','title','release_year','listed_in','rating','description'}]
     
     #Renombramos las columnas para que sean más fáciles de entender
-    df.columns = ['id','tile','year','genres','rating','overview']
+    df.columns = ['id','tile','year','category','rating','overview']
     
     #Llenamos los espacios vacios con texto vacio y convertimos los datos en una lista de diccionarios
     return df.fillna('').to_dict(orient='records')
