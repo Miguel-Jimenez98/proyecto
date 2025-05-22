@@ -49,3 +49,43 @@ app = FastAPI(title='Mi aplicación de películas', version='1.0.0')
 def home():
     # Cuando entremos en el navegador a http://127.0.0.1:8000 veremos un mensaje de bienvenida
     return HTMLResponse('<h1> Bienvenido a la API de peliculas </h1>')
+
+#Obteniendo la lista de películas (Estamos crando un endpoint que nos permite pregargar en cache la lista de películas)
+#Creamos una ruta para obtener todas las películas
+#Rutas para obtener todas las películas
+@app.get('/movies', tags=['Movies'])
+def get_movies():
+    #Si hay películas, las envíamos, si no, mostramos un error.
+    return movies_list or HTMLResponse(status_code=500, detail="No hay datos de películas disponibles")
+
+#Ruta para obtener película específica por su ID
+@app.get('/movies/{id}', tags=['Movies'])
+def get_movies(id: str):
+    #Buscamos en la lista de películas la que tenga el mismo ID
+    return next((m for m in movies_list if m['id'] == id), {"detalle": "Película no encontrada"})
+
+#Ruta del chatbot que responde con películas según palabras claves de la categoría
+
+@app.get('/chatbot', tags=['Chatbot'])
+def chatbot(query: str):
+    #Dividimos la consulta en palabras clave para entender mejor la intención del usuario
+    query_words = word_tokenize(query.lower())
+    
+    #Buscamos sinónimos de las palabras clave para ampliar la búsqueda
+    synonyms = {word for q in query_words for word in get_synonyms(q)} | set(query_words)
+    
+    #Filtramos la lista de películas buscando coincidencias en la categoría
+    results = [m for m in movies_list if any (s in m ['category'].lower() for s in synonyms)]
+    
+    #Si encontramos películas enviamos la lista, si no enviamos un mensaje de que no se encontraron coincidencias
+    return JSONResponse (content={
+        "respuesta": "Aquí tienes algunas películas relacionadas." if results else "No encontré películas en esa categoría.",
+        "películas": results
+    })
+
+#Ruta para buscar películas por categoría específica
+
+@app.get('/movies/', tags=['Movies'])
+def get_movies_by_category(category: str):
+    # Filtramos la lista de películas según la categoría ingresada
+    return [m for m in movies_list if category.lower() in m['category'].lower()]
